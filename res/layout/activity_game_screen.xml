@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".GameScreen" 
+    android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+    android:background="@drawable/background" >
+
+    <TextView
+        android:id="@+id/player2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/cpu"
+        android:textSize="20sp" />
+    
+    <TextView
+        android:id="@+id/player2_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/score"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/player2_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/time_00_00"
+        android:textSize="20sp" />
+    
+    <GridView
+        android:id="@+id/gameboard_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/player2"
+        android:gravity="center"
+        android:horizontalSpacing="0dp"
+        android:background="@color/purple"
+        tools:listitem="@android:layout/simple_list_item_1"
+        android:adjustViewBounds="true"
+        >
+    </GridView>
+    
+    <TextView
+        android:id="@+id/player1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/gameboard_grid"
+        android:text="@string/you" 
+        android:background="@color/yellow"
+        android:textSize="20sp"/>
+    
+    <TextView
+        android:id="@+id/player1_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/gameboard_grid"
+        android:text="@string/score" 
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/player1_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/gameboard_grid"
+        android:text="@string/time_00_00"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/show_moves"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/show_moves" />
+
+    <TextView
+        android:id="@+id/global_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/total_time_00_00"
+        android:textSize="20sp" />
+
+</RelativeLayout>

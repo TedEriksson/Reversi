@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Reversi</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_menu_screen">MenuScreen</string>
+    <string name="play_timed">Play Timed</string>
+    <string name="play_normal">Play Normal</string>
+    <string name="options">Options</string>
+    <string name="dialog_title_play">Please select Versus</string>
+    <string name="dialog_start_message_play">You have slected to play</string>
+    <string name="cpu">CPU</string>
+    <string name="player">Player</string>
+    <string name="player2">Player 2</string>
+    <string name="normal">Normal</string>
+    <string name="timed">Timed</string>
+    <string name="title_activity_game">Game</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_game_screen">GameScreen</string>
+    <string name="action_settings">Settings</string>
+    <string name="show_moves">Show Moves</string>
+    <string name="you">You</string>
+    <string name="score">Score:</string>
+    <string name="time_00_00">Time 00:00</string>
+    <string name="total_time_00_00">Total time: 00:00</string>
+    <string name="title_activity_options">Options</string>
+
+</resources>
