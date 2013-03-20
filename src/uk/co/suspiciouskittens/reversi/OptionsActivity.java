@@ -20,7 +20,7 @@ public class OptionsActivity extends Activity {
 		setContentView(R.layout.activity_options);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		list = (ListActivity) getApplicationContext();
+		//list = (ListActivity) getApplicationContext();
 		
 	}
 
