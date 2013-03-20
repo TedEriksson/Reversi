@@ -26,5 +26,6 @@
     <string name="time_00_00">Time 00:00</string>
     <string name="total_time_00_00">Total time: 00:00</string>
     <string name="title_activity_options">Options</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>
