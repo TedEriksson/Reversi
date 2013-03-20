@@ -12,6 +12,7 @@ public class OptionsActivity extends Activity {
 	
 	private TextView player1;
 	private ListActivity list;
+	//Testing 123
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
