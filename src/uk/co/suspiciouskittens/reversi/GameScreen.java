@@ -190,7 +190,7 @@ public class GameScreen extends Activity {
 		}
 		if (checkCanMove().isEmpty()) {
 			if (prevPlayerCantMove || !freeSpace) {
-				onGameEnd();
+				onGameEnd(1);
 			} else {
 				Toast cantMove = Toast.makeText(getApplicationContext(),
 						playerNames[playerNo - 1] + " cannot play a move",
@@ -398,13 +398,14 @@ public class GameScreen extends Activity {
 				Queue queuePos = checkCanMove();
 
 				if (!queuePos.isEmpty()) {
-					int bestMove = 0,bestPos = queuePos.get(0);
+					int bestMove = 0, bestPos = queuePos.get(0);
 					while (!queuePos.isEmpty()) {
 						int tempMove = 0;
 						int position = queuePos.remove();
 						Cell[] tempBoard = checkMove(position);
 						for (int i = 0; i < tempBoard.length; i++) {
-							if (tempBoard[i].getState() == playerNo && board[i].getState() != playerNo) {
+							if (tempBoard[i].getState() == playerNo
+									&& board[i].getState() != playerNo) {
 								if (i == 0)
 									tempMove += 10;
 								if (Math.floor(i / boardSize) == 0
@@ -417,8 +418,8 @@ public class GameScreen extends Activity {
 						}
 						if (tempMove > bestMove) {
 							bestPos = position;
-						}else if(tempMove == bestMove) {
-							if(random.nextInt(2) == 1) {
+						} else if (tempMove == bestMove) {
+							if (random.nextInt(2) == 1) {
 								bestPos = position;
 							}
 						}
@@ -456,29 +457,57 @@ public class GameScreen extends Activity {
 		}
 	}
 
-	private void onGameEnd() {
+	private void onGameEnd(int endType) {
+		if (gameMode == 1)
+			stopTimer();
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				GameScreen.activity);
-		builder.setMessage(
-				"The Winner is "
-						+ (score[0] > score[1] ? "Player 1" : "Player 2"))
-				.setTitle("Game Over")
-				.setNegativeButton("Cancel",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.cancel();
-							}
-						})
-				.setPositiveButton("New Game",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								newGame();
-							}
-						});
+		switch (endType) {
+		case 1:
+			builder.setMessage(
+					"The Winner is "
+							+ (score[0] > score[1] ? "Player 1" : "Player 2"))
+					.setTitle("Game Over")
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.cancel();
+								}
+							})
+					.setPositiveButton("New Game",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									newGame();
+								}
+							});
+			break;
+		case 2:
+			builder.setMessage(
+					"Player " + playerNo + " ran out of time! The Winner is "
+							+ (playerNo == 2 ? "Player 1" : "Player 2"))
+					.setTitle("Game Over")
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.cancel();
+								}
+							})
+					.setPositiveButton("New Game",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									startActivity(getIntent());
+								}
+							});
+			break;
+		}
 		Dialog dialog = builder.create();
 		dialog.show();
 	}
@@ -500,31 +529,7 @@ public class GameScreen extends Activity {
 
 			@Override
 			public void onFinish() {
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						GameScreen.activity);
-				builder.setMessage(
-						"Player " + playerNo
-								+ " ran out of time! The Winner is "
-								+ (playerNo == 2 ? "Player 1" : "Player 2"))
-						.setTitle("Game Over")
-						.setNegativeButton("Cancel",
-								new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										dialog.cancel();
-									}
-								})
-						.setPositiveButton("New Game",
-								new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										startActivity(getIntent());
-									}
-								});
-				Dialog dialog = builder.create();
-				dialog.show();
+				onGameEnd(2);
 			}
 		}.start();
 
@@ -568,7 +573,7 @@ public class GameScreen extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void newGame() {
 		Intent intent = getIntent();
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
