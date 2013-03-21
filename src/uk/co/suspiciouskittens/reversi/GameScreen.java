@@ -145,7 +145,7 @@ public class GameScreen extends Activity {
 			}
 
 		});
-		
+
 		if (gameMode == 1)
 			startTimer();
 
@@ -385,7 +385,7 @@ public class GameScreen extends Activity {
 	}
 
 	private void cpuGo() {
-		new CountDownTimer(random.nextInt(500) + 300, 500) {
+		new CountDownTimer(random.nextInt(1000) + 500, 500) {
 
 			@Override
 			public void onTick(long millisUntilFinished) {
@@ -396,9 +396,35 @@ public class GameScreen extends Activity {
 			@Override
 			public void onFinish() {
 				Queue queuePos = checkCanMove();
-				if (!queuePos.isEmpty())
-					playTurn(queuePos.get(random.nextInt(queuePos.size())));
 
+				if (!queuePos.isEmpty()) {
+					int bestMove = 0,bestPos = queuePos.get(0);
+					while (!queuePos.isEmpty()) {
+						int tempMove = 0;
+						int position = queuePos.remove();
+						Cell[] tempBoard = checkMove(position);
+						for (int i = 0; i < tempBoard.length; i++) {
+							if (tempBoard[i].getState() == playerNo && board[i].getState() != playerNo) {
+								if (i == 0)
+									tempMove += 10;
+								if (Math.floor(i / boardSize) == 0
+										|| Math.ceil(i / boardSize) == boardSize
+										|| i % boardSize == 0
+										|| i % boardSize == boardSize - 1)
+									tempMove += 2;
+								tempMove++;
+							}
+						}
+						if (tempMove > bestMove) {
+							bestPos = position;
+						}else if(tempMove == bestMove) {
+							if(random.nextInt(2) == 1) {
+								bestPos = position;
+							}
+						}
+					}
+					playTurn(bestPos);
+				}
 			}
 		}.start();
 
@@ -450,7 +476,7 @@ public class GameScreen extends Activity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								startActivity(getIntent());
+								newGame();
 							}
 						});
 		Dialog dialog = builder.create();
@@ -538,10 +564,15 @@ public class GameScreen extends Activity {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.newgame:
-			startActivity(getIntent());
-			finishActivity(0);
+			newGame();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private void newGame() {
+		Intent intent = getIntent();
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
 	}
 
 }

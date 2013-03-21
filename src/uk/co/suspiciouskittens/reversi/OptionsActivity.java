@@ -12,7 +12,7 @@ public class OptionsActivity extends Activity {
 	
 	private TextView player1;
 	private ListActivity list;
-	//Testing 123
+	//Testing 1234
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,6 @@ public class OptionsActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		//list = (ListActivity) getApplicationContext();
-		
 	}
 
 	/**
