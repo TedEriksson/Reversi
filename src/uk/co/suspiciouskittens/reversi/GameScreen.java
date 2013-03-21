@@ -7,8 +7,6 @@ import android.os.CountDownTimer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
@@ -40,6 +38,7 @@ public class GameScreen extends Activity {
 	private CountDownTimer timer;
 	private long[] timeLeft = { 60000, 60000 };
 	private Random random = new Random();
+	private boolean timerRunning = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +73,8 @@ public class GameScreen extends Activity {
 		// Set up timer views
 		player1Time = (TextView) findViewById(R.id.player1_time);
 		player2Time = (TextView) findViewById(R.id.player2_time);
+		player1Time.setText("Time: " + timeLeft[0] / 1000);
+		player2Time.setText("Time: " + timeLeft[1] / 1000);
 
 		// Set default scores
 		player1Score.setText(getString(R.string.score) + " " + score[0]);
@@ -146,9 +147,6 @@ public class GameScreen extends Activity {
 
 		});
 
-		if (gameMode == 1)
-			startTimer();
-
 		// Creates an OnItemClickListener
 		OnItemClickListener boardClickListener = new OnItemClickListener() {
 
@@ -157,7 +155,9 @@ public class GameScreen extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				if ((vs == 0 && playerNo == 1) || vs == 1)
-					playTurn(position);
+					if (!timerRunning)
+						startTimer();
+				playTurn(position);
 			}
 
 		};
@@ -219,6 +219,7 @@ public class GameScreen extends Activity {
 			playerNo = 1;
 		}
 		if (gameMode == 1) {
+			timerRunning = true;
 			stopTimer();
 			startTimer();
 		}
@@ -458,7 +459,7 @@ public class GameScreen extends Activity {
 	}
 
 	private void onGameEnd(int endType) {
-		if (gameMode == 1)
+		if (gameMode == 1 && timerRunning)
 			stopTimer();
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				GameScreen.activity);
@@ -488,7 +489,7 @@ public class GameScreen extends Activity {
 		case 2:
 			builder.setMessage(
 					"Player " + playerNo + " ran out of time! The Winner is "
-							+ (playerNo == 2 ? "Player 1" : "Player 2"))
+							+ (playerNo == 2 ? playerNames[0] : playerNames[1]))
 					.setTitle("Game Over")
 					.setNegativeButton("Cancel",
 							new DialogInterface.OnClickListener() {

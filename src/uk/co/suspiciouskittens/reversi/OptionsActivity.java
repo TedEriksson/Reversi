@@ -5,13 +5,18 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
 public class OptionsActivity extends Activity {
 	
 	private TextView player1;
-	private ListActivity list;
+	private ListView list;
+	private ArrayAdapter<String> listAdapter;
+	private String[] lolol = {"Hello", "Sophie", "How are you"};
 	//Testing 1234
 
 	@Override
@@ -20,7 +25,11 @@ public class OptionsActivity extends Activity {
 		setContentView(R.layout.activity_options);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		//list = (ListActivity) getApplicationContext();
+		list = (ListView) findViewById(R.layout.activity_options);
+		listAdapter = new ArrayAdapter<String>(this, R.layout.activity_options,lolol);
+		list.setAdapter(listAdapter);
+		listAdapter.notifyDataSetChanged();
+		
 	}
 
 	/**
