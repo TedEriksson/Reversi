@@ -27,5 +27,17 @@
     <string name="total_time_00_00">Total time: 00:00</string>
     <string name="title_activity_options">Options</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="options_import">Import</string>
+    <string name="player_1_name">Player 1 Name</string>
+    <string name="player_2_name">Player 2 Name</string>
+    <string name="options_time_label">Amount of time in Timed Mode (milliseconds)</string>
+    <string name="options_time_hint">60000</string>
+    <string name="allow_hints">Allow Hints</string>
+    <string name="togglebutton">ToggleButton</string>
+    <string name="show_the_show_moves_button_">Show the Show Moves button:</string>
+    <string name="set_background">Set Background</string>
+    <string name="delete_data">Delete Data</string>
+    <string name="delete_your_hard_earned_data">Delete your hard earned data</string>
+    <string name="save_changes">Save Changes</string>
 
 </resources>

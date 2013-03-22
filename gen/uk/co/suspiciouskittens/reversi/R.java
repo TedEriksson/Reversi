@@ -47,21 +47,39 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title=0x7f020008;
     }
     public static final class id {
-        public static final int ListView1=0x7f09000d;
-        public static final int action_settings=0x7f09000f;
+        public static final int LinearLayout1=0x7f09000d;
+        public static final int action_settings=0x7f090021;
+        public static final int background_button=0x7f09001d;
+        public static final int background_label=0x7f09001c;
+        public static final int delete_data_button=0x7f09001f;
+        public static final int delete_data_label=0x7f09001e;
+        public static final int editText1=0x7f090018;
         public static final int gameboard_grid=0x7f090003;
         public static final int global_time=0x7f090008;
+        public static final int hints_toggle=0x7f09001a;
         public static final int imageView1=0x7f09000c;
-        public static final int menu_settings=0x7f09000e;
-        public static final int newgame=0x7f090010;
+        public static final int menu_settings=0x7f090020;
+        public static final int newgame=0x7f090022;
         public static final int normal_button=0x7f09000a;
+        public static final int optionsPlayer1Button=0x7f090011;
+        public static final int optionsPlayer1EditText=0x7f090012;
+        public static final int optionsPlayer1Label=0x7f090010;
+        public static final int optionsPlayer2Button=0x7f090015;
+        public static final int optionsPlayer2EditText=0x7f090016;
+        public static final int optionsPlayer2Label=0x7f090014;
+        public static final int optionsTimeLabel=0x7f090017;
         public static final int options_button=0x7f09000b;
+        public static final int options_hints_description=0x7f09001b;
+        public static final int options_hints_label=0x7f090019;
         public static final int player1=0x7f090004;
         public static final int player1_score=0x7f090005;
         public static final int player1_time=0x7f090006;
+        public static final int player1image=0x7f09000f;
         public static final int player2=0x7f090000;
         public static final int player2_score=0x7f090001;
         public static final int player2_time=0x7f090002;
+        public static final int player2image=0x7f090013;
+        public static final int save_changes=0x7f09000e;
         public static final int show_moves=0x7f090007;
         public static final int timed_button=0x7f090009;
     }
@@ -80,8 +98,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class string {
         public static final int action_settings=0x7f060012;
+        public static final int allow_hints=0x7f06001f;
         public static final int app_name=0x7f060000;
         public static final int cpu=0x7f060009;
+        public static final int delete_data=0x7f060023;
+        public static final int delete_your_hard_earned_data=0x7f060024;
         public static final int dialog_start_message_play=0x7f060008;
         public static final int dialog_title_play=0x7f060007;
         public static final int dummy_button=0x7f06000f;
@@ -90,12 +111,20 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int menu_settings=0x7f060002;
         public static final int normal=0x7f06000c;
         public static final int options=0x7f060006;
+        public static final int options_import=0x7f06001a;
+        public static final int options_time_hint=0x7f06001e;
+        public static final int options_time_label=0x7f06001d;
         public static final int play_normal=0x7f060005;
         public static final int play_timed=0x7f060004;
         public static final int player=0x7f06000a;
         public static final int player2=0x7f06000b;
+        public static final int player_1_name=0x7f06001b;
+        public static final int player_2_name=0x7f06001c;
+        public static final int save_changes=0x7f060025;
         public static final int score=0x7f060015;
+        public static final int set_background=0x7f060022;
         public static final int show_moves=0x7f060013;
+        public static final int show_the_show_moves_button_=0x7f060021;
         public static final int time_00_00=0x7f060016;
         public static final int timed=0x7f06000d;
         public static final int title_activity_game=0x7f06000e;
@@ -103,6 +132,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_main=0x7f060019;
         public static final int title_activity_menu_screen=0x7f060003;
         public static final int title_activity_options=0x7f060018;
+        public static final int togglebutton=0x7f060020;
         public static final int total_time_00_00=0x7f060017;
         public static final int you=0x7f060014;
     }

@@ -7,8 +7,10 @@ import android.os.CountDownTimer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +40,8 @@ public class GameScreen extends Activity {
 	private CountDownTimer timer;
 	private long[] timeLeft = { 60000, 60000 };
 	private Random random = new Random();
-	private boolean timerRunning = false;
+	private boolean timerRunning = false, gameOver = false;
+	public static final String PREFS = "uk.co.suspiciouskittens.reversi.prefs";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,11 @@ public class GameScreen extends Activity {
 
 		// Show the Up button in the action bar.
 		setupActionBar();
+
+		// Get intent from previous Activity with the extras
+		Intent intent = getIntent();
+		vs = intent.getIntExtra("VS", 2);
+		gameMode = intent.getIntExtra("GAME_MODE", 2);
 
 		// Initialise the Cells
 		for (int i = 0; i < board.length; i++) {
@@ -73,8 +81,13 @@ public class GameScreen extends Activity {
 		// Set up timer views
 		player1Time = (TextView) findViewById(R.id.player1_time);
 		player2Time = (TextView) findViewById(R.id.player2_time);
-		player1Time.setText("Time: " + timeLeft[0] / 1000);
-		player2Time.setText("Time: " + timeLeft[1] / 1000);
+		if (gameMode == 1) {
+			player1Time.setText("Time: " + timeLeft[0] / 1000);
+			player2Time.setText("Time: " + timeLeft[1] / 1000);
+		} else {
+			player1Time.setText("Time: ∞");
+			player2Time.setText("Time: ∞");
+		}
 
 		// Set default scores
 		player1Score.setText(getString(R.string.score) + " " + score[0]);
@@ -96,11 +109,6 @@ public class GameScreen extends Activity {
 		// Set the grids adapter
 		boardGrid.setAdapter(boardAdapter);
 
-		// Get intent from previous Activity with the extras
-		Intent intent = getIntent();
-		vs = intent.getIntExtra("VS", 2);
-		gameMode = intent.getIntExtra("GAME_MODE", 2);
-
 		// Starts a String that will become the title of the Activity
 		String titleMessage = "VS ";
 
@@ -121,12 +129,13 @@ public class GameScreen extends Activity {
 
 		// Sets the title to the String just created
 		setTitle(titleMessage);
-
-		playerNames[0] = "Ted";
+		SharedPreferences prefs = this.getSharedPreferences(PREFS,
+				Context.MODE_PRIVATE);
+		playerNames[0] = prefs.getString(PREFS + ".p1Text", "CANT FIND");
 		if (vs == 0) {
 			playerNames[1] = getString(R.string.cpu);
 		} else {
-			playerNames[1] = "Bob";
+			playerNames[1] = prefs.getString(PREFS + ".p2Text", "CANT FIND");
 		}
 
 		player1.setText(playerNames[0]);
@@ -154,16 +163,20 @@ public class GameScreen extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				if ((vs == 0 && playerNo == 1) || vs == 1)
-					if (!timerRunning)
-						startTimer();
-				playTurn(position);
+				if ((vs == 0 && playerNo == 1 && !gameOver)
+						|| (vs == 1 && !gameOver))
+					playTurn(position);
 			}
 
 		};
 		// Set the grid item listener
 		boardGrid.setOnItemClickListener(boardClickListener);
 
+	}
+	
+	protected void onPause () {
+		super.onPause();
+		timer.cancel();
 	}
 
 	// Calculates each players core and passes back an array
@@ -182,14 +195,8 @@ public class GameScreen extends Activity {
 
 	private void endGo() {
 		swapPlayers();
-		boolean freeSpace = false;
-		for (int i = 0; i < board.length; i++) {
-			if (board[i].getState() == 0) {
-				freeSpace = true;
-			}
-		}
 		if (checkCanMove().isEmpty()) {
-			if (prevPlayerCantMove || !freeSpace) {
+			if (prevPlayerCantMove) {
 				onGameEnd(1);
 			} else {
 				Toast cantMove = Toast.makeText(getApplicationContext(),
@@ -197,7 +204,7 @@ public class GameScreen extends Activity {
 						Toast.LENGTH_LONG);
 				cantMove.show();
 				prevPlayerCantMove = true;
-				swapPlayers();
+				endGo();
 			}
 		} else {
 			prevPlayerCantMove = false;
@@ -209,6 +216,8 @@ public class GameScreen extends Activity {
 
 	// Swaps the playerNo and sets colour denoting who's go it is
 	private void swapPlayers() {
+		if (gameMode == 1 && timerRunning)
+			stopTimer();
 		if (playerNo == 1) {
 			player1.setBackgroundColor(getResources().getColor(R.color.alpha));
 			player2.setBackgroundColor(getResources().getColor(R.color.yellow));
@@ -220,7 +229,6 @@ public class GameScreen extends Activity {
 		}
 		if (gameMode == 1) {
 			timerRunning = true;
-			stopTimer();
 			startTimer();
 		}
 	}
@@ -407,7 +415,9 @@ public class GameScreen extends Activity {
 						for (int i = 0; i < tempBoard.length; i++) {
 							if (tempBoard[i].getState() == playerNo
 									&& board[i].getState() != playerNo) {
-								if (i == 0)
+								if (i == 0 || i == boardSize - 1
+										|| i == board.length - boardSize - 1
+										|| i == board.length - 1)
 									tempMove += 10;
 								if (Math.floor(i / boardSize) == 0
 										|| Math.ceil(i / boardSize) == boardSize
@@ -459,56 +469,41 @@ public class GameScreen extends Activity {
 	}
 
 	private void onGameEnd(int endType) {
-		if (gameMode == 1 && timerRunning)
+		if (gameMode == 1 && timerRunning) {
 			stopTimer();
+			timerRunning = false;
+		}
+		gameOver = true;
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				GameScreen.activity);
 		switch (endType) {
 		case 1:
-			builder.setMessage(
-					"The Winner is "
-							+ (score[0] > score[1] ? "Player 1" : "Player 2"))
-					.setTitle("Game Over")
-					.setNegativeButton("Cancel",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									dialog.cancel();
-								}
-							})
-					.setPositiveButton("New Game",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									newGame();
-								}
-							});
+			builder.setMessage("The Winner is "
+					+ (score[0] > score[1] ? playerNames[0] : playerNames[1]));
 			break;
 		case 2:
-			builder.setMessage(
-					"Player " + playerNo + " ran out of time! The Winner is "
-							+ (playerNo == 2 ? playerNames[0] : playerNames[1]))
-					.setTitle("Game Over")
-					.setNegativeButton("Cancel",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									dialog.cancel();
-								}
-							})
-					.setPositiveButton("New Game",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									startActivity(getIntent());
-								}
-							});
+			builder.setMessage(playerNames[playerNo - 1]
+					+ " ran out of time! The Winner is "
+					+ (playerNo == 2 ? playerNames[0] : playerNames[1]));
 			break;
 		}
+		builder.setTitle("Game Over")
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.cancel();
+							}
+						})
+				.setPositiveButton("New Game",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								newGame();
+							}
+						});
 		Dialog dialog = builder.create();
 		dialog.show();
 	}

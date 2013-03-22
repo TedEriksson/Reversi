@@ -1,12 +1,223 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ListView1"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".OptionsActivity" >
 
-</ListView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/save_changes" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="1" >
+            
+            <ImageView
+                android:id="@+id/player1image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/optionsPlayer1Label"
+                
+                android:src="@drawable/cell_black" />
+
+            <TextView
+                android:id="@+id/optionsPlayer1Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|top"
+                android:text="@string/player_1_name" />
+
+            <Button
+                android:id="@+id/optionsPlayer1Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/optionsPlayer1Label"
+                android:text="@string/options_import"  />
+
+            <EditText
+                android:id="@+id/optionsPlayer1EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/optionsPlayer1Label"
+                android:layout_toRightOf="@+id/player1image"
+                android:layout_toLeftOf="@+id/optionsPlayer1Button"
+                android:layout_alignParentBottom="true"
+                android:ems="10"
+                android:hint="@string/player"
+                android:inputType="textPersonName" >
+
+                <requestFocus android:layout_width="wrap_content" />
+            </EditText>
+
+            
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="1" >
+            
+            <ImageView
+                android:id="@+id/player2image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/optionsPlayer2Label"
+                
+                android:src="@drawable/cell_white" />
+
+            <TextView
+                android:id="@+id/optionsPlayer2Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|top"
+                android:text="@string/player_2_name" />
+
+            <Button
+                android:id="@+id/optionsPlayer2Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/optionsPlayer2Label"
+                android:text="@string/options_import" />
+
+           <EditText
+                android:id="@+id/optionsPlayer2EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/optionsPlayer2Label"
+                android:layout_toRightOf="@+id/player2image"
+                android:layout_toLeftOf="@+id/optionsPlayer2Button"
+                android:layout_alignParentBottom="true"
+                android:ems="10"
+                android:hint="@string/player"
+                android:inputType="textPersonName" >
+
+                <requestFocus android:layout_width="wrap_content" />
+            </EditText>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="1" >
+
+            <TextView
+                android:id="@+id/optionsTimeLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|top"
+                android:text="@string/options_time_label" />
+
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/optionsTimeLabel"
+                android:layout_gravity="left|bottom"
+                android:ems="10"
+                android:hint="@string/options_time_hint"
+                android:inputType="number" >
+
+                <requestFocus />
+            </EditText>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/options_hints_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/allow_hints" />
+
+            <ToggleButton
+                android:id="@+id/hints_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/options_hints_label"
+                android:text="@string/togglebutton"
+                android:textOff="NO"
+                android:textOn="YES" />
+
+            <TextView
+                android:id="@+id/options_hints_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/hints_toggle"
+                android:layout_alignBottom="@+id/hints_toggle"
+                android:layout_toLeftOf="@+id/hints_toggle"
+                android:text="@string/show_the_show_moves_button_" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/background_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/set_background" />
+
+            <Button
+                android:id="@+id/background_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/background_label"
+                android:text="@string/set_background" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/delete_data_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/delete_data" />
+
+            <Button
+                android:id="@+id/delete_data_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/delete_data_label"
+                android:text="@string/delete_your_hard_earned_data" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
+    <Button
+        android:id="@+id/save_changes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/save_changes" />
+
+</RelativeLayout>
