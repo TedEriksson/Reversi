@@ -12,7 +12,7 @@ import android.provider.ContactsContract.Contacts;
 
 public class ContactPhotoLoader {
 
-	Bitmap photo;
+	private Bitmap photo;
 
 	public Bitmap load(String id, ContentResolver cr) {
 		Uri person = ContentUris.withAppendedId(Contacts.CONTENT_URI,
