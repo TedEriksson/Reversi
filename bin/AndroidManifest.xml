@@ -7,9 +7,11 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="17" />
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/launch_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
@@ -35,7 +37,9 @@
         <activity
             android:name="uk.co.suspiciouskittens.reversi.OptionsActivity"
             android:label="@string/title_activity_options"
-            android:parentActivityName="uk.co.suspiciouskittens.reversi.MenuScreen" >
+            android:parentActivityName="uk.co.suspiciouskittens.reversi.MenuScreen"
+            android:screenOrientation="portrait" >
+ >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="uk.co.suspiciouskittens.reversi.MenuScreen" />
@@ -43,6 +47,14 @@
         <activity
             android:name="uk.co.suspiciouskittens.reversi.MainActivity"
             android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name="uk.co.suspiciouskittens.reversi.HighScoresActivity"
+            android:label="@string/title_activity_high_scores"
+            android:parentActivityName="uk.co.suspiciouskittens.reversi.MenuScreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uk.co.suspiciouskittens.reversi.MenuScreen" />
         </activity>
     </application>
 

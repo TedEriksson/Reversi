@@ -39,6 +39,7 @@
                 android:id="@+id/optionsPlayer1Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
                 android:layout_gravity="left|top"
                 android:text="@string/player_1_name" />
 
@@ -88,6 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|top"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
                 android:text="@string/player_2_name" />
 
             <Button
@@ -124,10 +126,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|top"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
                 android:text="@string/options_time_label" />
 
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/optionstime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/optionsTimeLabel"
@@ -149,6 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
                 android:layout_alignParentTop="true"
                 android:text="@string/allow_hints" />
 
@@ -177,27 +181,8 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/background_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/set_background" />
-
-            <Button
-                android:id="@+id/background_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/background_label"
-                android:text="@string/set_background" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
                 android:id="@+id/delete_data_label"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

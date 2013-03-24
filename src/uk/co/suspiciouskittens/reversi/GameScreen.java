@@ -1,7 +1,6 @@
 package uk.co.suspiciouskittens.reversi;
 
 import java.util.Random;
-
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.app.Activity;
@@ -18,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
@@ -41,13 +41,15 @@ public class GameScreen extends Activity {
 	private long[] timeLeft = { 60000, 60000 };
 	private Random random = new Random();
 	private boolean timerRunning = false, gameOver = false;
+	private ImageView player1Contact, player2Contact;
 	public static final String PREFS = "uk.co.suspiciouskittens.reversi.prefs";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_screen);
-
+		SharedPreferences prefs = this.getSharedPreferences(PREFS,
+				Context.MODE_PRIVATE);
 		activity = this;
 
 		// Show the Up button in the action bar.
@@ -69,6 +71,9 @@ public class GameScreen extends Activity {
 		board[(board.length / 2) - (boardSize / 2)].setState(1);
 		board[(board.length / 2) + (boardSize / 2) - 1].setState(1);
 		board[(board.length / 2) + (boardSize / 2)].setState(2);
+		
+		player1Contact = (ImageView) findViewById(R.id.player1_contact_image);
+		player2Contact = (ImageView) findViewById(R.id.player2_contact_image);
 
 		// Set up Player name tags
 		player1 = (TextView) findViewById(R.id.player1);
@@ -78,17 +83,7 @@ public class GameScreen extends Activity {
 		player1Score = (TextView) findViewById(R.id.player1_score);
 		player2Score = (TextView) findViewById(R.id.player2_score);
 
-		// Set up timer views
-		player1Time = (TextView) findViewById(R.id.player1_time);
-		player2Time = (TextView) findViewById(R.id.player2_time);
-		if (gameMode == 1) {
-			player1Time.setText("Time: " + timeLeft[0] / 1000);
-			player2Time.setText("Time: " + timeLeft[1] / 1000);
-		} else {
-			player1Time.setText("Time: ∞");
-			player2Time.setText("Time: ∞");
-		}
-
+		
 		// Set default scores
 		player1Score.setText(getString(R.string.score) + " " + score[0]);
 		player2Score.setText(getString(R.string.score) + " " + score[1]);
@@ -129,20 +124,58 @@ public class GameScreen extends Activity {
 
 		// Sets the title to the String just created
 		setTitle(titleMessage);
-		SharedPreferences prefs = this.getSharedPreferences(PREFS,
-				Context.MODE_PRIVATE);
-		playerNames[0] = prefs.getString(PREFS + ".p1Text", "CANT FIND");
+		
+		
+		long time = Long.parseLong(prefs.getString(PREFS + ".timeText", "60000"));
+		timeLeft[0] = time;
+		timeLeft[1] = time;
+		playerNames[0] = prefs.getString(PREFS + ".p1Text", "Player 1");
+		
+		String player1Id = prefs.getString(GameScreen.PREFS + ".p1ID",
+				"-1");
+		
+		String player2Id = prefs.getString(GameScreen.PREFS + ".p2ID",
+				"-1");
+		
+		ContactPhotoLoader photoLoader = new ContactPhotoLoader();
+		
+		if(player1Id.equals("-1")) {
+			player1Contact.setImageResource(R.drawable.cell_black);
+		} else {
+			player1Contact.setImageBitmap(photoLoader.load(player1Id,
+					getContentResolver()));
+		}
+		
 		if (vs == 0) {
 			playerNames[1] = getString(R.string.cpu);
 		} else {
-			playerNames[1] = prefs.getString(PREFS + ".p2Text", "CANT FIND");
+			playerNames[1] = prefs.getString(PREFS + ".p2Text", "Player 2");
+			if(player2Id.equals("-1")) {
+				player2Contact.setImageResource(R.drawable.cell_white);
+			} else {
+				player2Contact.setImageBitmap(photoLoader.load(player2Id,
+						getContentResolver()));
+			}
 		}
+		// Set up timer views
+				player1Time = (TextView) findViewById(R.id.player1_time);
+				player2Time = (TextView) findViewById(R.id.player2_time);
+				if (gameMode == 1) {
+					player1Time.setText("Time: " + timeLeft[0] / 1000);
+					player2Time.setText("Time: " + timeLeft[1] / 1000);
+				} else {
+					player1Time.setText("Time: ∞");
+					player2Time.setText("Time: ∞");
+				}
+ 
 
 		player1.setText(playerNames[0]);
 		player2.setText(playerNames[1]);
 
 		showMoves = (Button) findViewById(R.id.show_moves);
-
+		
+		if(!prefs.getBoolean(GameScreen.PREFS + ".moves", true))
+			showMoves.setEnabled(false);
 		showMoves.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -176,7 +209,8 @@ public class GameScreen extends Activity {
 	
 	protected void onPause () {
 		super.onPause();
-		timer.cancel();
+		if(gameMode == 1)
+			timer.cancel();
 	}
 
 	// Calculates each players core and passes back an array
@@ -309,7 +343,6 @@ public class GameScreen extends Activity {
 					}
 				}
 			}
-
 		}
 		// if no moves were made return a null board
 		if (!moveMade) {
@@ -435,7 +468,8 @@ public class GameScreen extends Activity {
 							}
 						}
 					}
-					playTurn(bestPos);
+					if(playerNo == 2)
+						playTurn(bestPos);
 				}
 			}
 		}.start();

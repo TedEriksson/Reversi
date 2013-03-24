@@ -39,5 +39,9 @@
     <string name="delete_data">Delete Data</string>
     <string name="delete_your_hard_earned_data">Delete your hard earned data</string>
     <string name="save_changes">Save Changes</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete ALL data</string>
+    <string name="dialog_title_delete">Delete all data?</string>
+    <string name="title_activity_high_scores">HighScoresActivity</string>
 
 </resources>
