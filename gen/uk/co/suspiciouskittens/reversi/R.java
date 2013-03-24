@@ -23,6 +23,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int black_overlay=0x7f040000;
         public static final int green=0x7f040002;
         public static final int purple=0x7f040001;
+        public static final int white=0x7f040005;
         public static final int yellow=0x7f040003;
     }
     public static final class dimen {
@@ -44,7 +45,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_action_search=0x7f020005;
         public static final int ic_launcher=0x7f020006;
         public static final int launch_icon=0x7f020007;
-        public static final int title=0x7f020008;
+        public static final int nameholder=0x7f020008;
+        public static final int title=0x7f020009;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f090012;

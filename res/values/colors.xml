@@ -5,5 +5,6 @@
     <color name="green">#65AD57</color>
     <color name="yellow">#F2F066</color>
     <color name="alpha">#00000000</color>
+    <color name="white">#FFF</color>
 
 </resources>
