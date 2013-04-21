@@ -11,11 +11,13 @@ public class ImageAdapter extends BaseAdapter {
 	private Context context;
 	private Cell[] board;
 	private int boardSize;
+	private boolean alternativeColours = false;
 
-	public ImageAdapter(Context c, Cell[] board, int boardSize) {
+	public ImageAdapter(Context c, Cell[] board, int boardSize, boolean altCol) {
 		context = c;
 		this.board = board;
 		this.boardSize = boardSize;
+		this.alternativeColours = altCol;
 	}
 
 	@Override
@@ -53,11 +55,11 @@ public class ImageAdapter extends BaseAdapter {
 		} else {
 			switch (board[position].getState()) {
 			case 1:
-				imageView.setImageResource(R.drawable.cell_black);
+				imageView.setImageResource(alternativeColours ? R.drawable.cell_blue : R.drawable.cell_black);
 				break;
 
 			case 2:
-				imageView.setImageResource(R.drawable.cell_white);
+				imageView.setImageResource(alternativeColours ? R.drawable.cell_red : R.drawable.cell_white);
 				break;
 
 			default:

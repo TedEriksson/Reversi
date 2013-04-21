@@ -125,14 +125,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="@string/show_moves" />
-
-    <TextView
-        android:id="@+id/global_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/total_time_00_00"
-        android:textSize="20sp" />
 	     
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.provider.ContactsContract.Contacts;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,9 +32,9 @@ public class OptionsActivity extends Activity {
 	private Button saveButton, clearButton;
 	private ContactPhotoLoader photoLoader = new ContactPhotoLoader();
 	private String player1Id = "", player2Id = "";
-	private ToggleButton showMoves;
+	private ToggleButton showMoves, enableSounds, altColours;
 	public static Activity activity;
-	private boolean moves = true;
+	private boolean moves = true, sounds = true, alt = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +53,15 @@ public class OptionsActivity extends Activity {
 		player2Image = (ImageView) findViewById(R.id.player2image);
 		time = (EditText) findViewById(R.id.optionstime);
 		showMoves = (ToggleButton) findViewById(R.id.hints_toggle);
+		enableSounds = (ToggleButton) findViewById(R.id.sound_toggle);
+		altColours = (ToggleButton) findViewById(R.id.alt_toggle);
 		
 		showMoves.setChecked(prefs.getBoolean(GameScreen.PREFS + ".moves", true));
-
+		enableSounds.setChecked(prefs.getBoolean(GameScreen.PREFS + ".sounds", true));
+		altColours.setChecked(prefs.getBoolean(GameScreen.PREFS + ".alt", false));
+		
 		time.setText(prefs.getString(GameScreen.PREFS + ".timeText",
-				"60000"));
+				"60"));
 		player1.setText(prefs.getString(GameScreen.PREFS + ".p1Text",
 				"Player 1"));
 		player2.setText(prefs.getString(GameScreen.PREFS + ".p2Text",
@@ -98,6 +103,22 @@ public class OptionsActivity extends Activity {
 			}
 		});
 		
+		enableSounds.setOnClickListener(new OnClickListener() {
+					
+			@Override
+			public void onClick(View v) {
+				sounds = enableSounds.isChecked();
+			}
+		});
+		
+		altColours.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				alt = altColours.isChecked();
+			}
+		});
+		
 		saveButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -115,7 +136,9 @@ public class OptionsActivity extends Activity {
 						.putString(GameScreen.PREFS + ".p2ID",
 								player2Id.toString())
 						.putString(GameScreen.PREFS + ".timeText", time.getText().toString())
-						.putBoolean(GameScreen.PREFS + ".moves", moves).commit();
+						.putBoolean(GameScreen.PREFS + ".moves", moves)
+						.putBoolean(GameScreen.PREFS + ".sounds", sounds)
+						.putBoolean(GameScreen.PREFS + ".alt", alt).commit();
 
 				Intent intent = new Intent(getApplicationContext(),
 						MenuScreen.class);
@@ -289,6 +312,9 @@ public class OptionsActivity extends Activity {
 										"uk.co.suspiciouskittens.reversi.prefs",
 										Context.MODE_PRIVATE);
 								prefs.edit().clear().commit();
+								
+								ContentResolver cr = getContentResolver();
+								cr.delete(HighScoreProvider.CONTENT_URI, null, null);
 								Intent intent = new Intent(
 										getApplicationContext(),
 										MenuScreen.class);

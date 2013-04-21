@@ -56,6 +56,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="uk.co.suspiciouskittens.reversi.MenuScreen" />
         </activity>
+        <provider android:name="uk.co.suspiciouskittens.reversi.HighScoreProvider"
+       		android:authorities="uk.co.suspiciouskittens.reversi.highscores">
+        </provider>
     </application>
 
 </manifest>

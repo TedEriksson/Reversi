@@ -1,11 +1,15 @@
 package uk.co.suspiciouskittens.reversi;
 
 import java.util.Random;
+
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,8 +45,12 @@ public class GameScreen extends Activity {
 	private long[] timeLeft = { 60000, 60000 };
 	private Random random = new Random();
 	private boolean timerRunning = false, gameOver = false;
+	private static boolean playSounds = true;
 	private ImageView player1Contact, player2Contact;
 	public static final String PREFS = "uk.co.suspiciouskittens.reversi.prefs";
+	private String player1Id, player2Id;
+	private long time, savedTime = -1;
+	private int beepCountDown = 30000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +107,7 @@ public class GameScreen extends Activity {
 		boardGrid.setNumColumns(boardSize);
 
 		// Create image adapter passing the Cell[] and length of each side
-		boardAdapter = new ImageAdapter(this, board, boardSize);
+		boardAdapter = new ImageAdapter(this, board, boardSize, prefs.getBoolean(GameScreen.PREFS + ".alt", false));
 
 		// Set the grids adapter
 		boardGrid.setAdapter(boardAdapter);
@@ -126,15 +134,15 @@ public class GameScreen extends Activity {
 		setTitle(titleMessage);
 		
 		
-		long time = Long.parseLong(prefs.getString(PREFS + ".timeText", "60000"));
+		time = Long.parseLong(prefs.getString(PREFS + ".timeText", "60")) * 1000;
 		timeLeft[0] = time;
 		timeLeft[1] = time;
 		playerNames[0] = prefs.getString(PREFS + ".p1Text", "Player 1");
 		
-		String player1Id = prefs.getString(GameScreen.PREFS + ".p1ID",
+		player1Id = prefs.getString(GameScreen.PREFS + ".p1ID",
 				"-1");
 		
-		String player2Id = prefs.getString(GameScreen.PREFS + ".p2ID",
+		player2Id = prefs.getString(GameScreen.PREFS + ".p2ID",
 				"-1");
 		
 		ContactPhotoLoader photoLoader = new ContactPhotoLoader();
@@ -171,6 +179,8 @@ public class GameScreen extends Activity {
 
 		player1.setText(playerNames[0]);
 		player2.setText(playerNames[1]);
+		
+		playSounds = prefs.getBoolean(GameScreen.PREFS + ".sounds", true);
 
 		showMoves = (Button) findViewById(R.id.show_moves);
 		
@@ -209,8 +219,18 @@ public class GameScreen extends Activity {
 	
 	protected void onPause () {
 		super.onPause();
-		if(gameMode == 1)
+		if(gameMode == 1 && timer != null) {
+			savedTime = timeLeft[playerNo -1];
 			timer.cancel();
+		}
+	}
+	
+	protected void onResume () {
+		super.onResume();
+		if(gameMode == 1 && timer != null) {
+			startTimer(savedTime);
+			savedTime = -1;
+		}
 	}
 
 	// Calculates each players core and passes back an array
@@ -263,7 +283,7 @@ public class GameScreen extends Activity {
 		}
 		if (gameMode == 1) {
 			timerRunning = true;
-			startTimer();
+			startTimer(time);
 		}
 	}
 
@@ -503,6 +523,10 @@ public class GameScreen extends Activity {
 	}
 
 	private void onGameEnd(int endType) {
+		
+		ContentResolver cr = getContentResolver();
+		ContentValues values = new ContentValues();
+		boolean didPlayer1win = false;
 		if (gameMode == 1 && timerRunning) {
 			stopTimer();
 			timerRunning = false;
@@ -512,15 +536,23 @@ public class GameScreen extends Activity {
 				GameScreen.activity);
 		switch (endType) {
 		case 1:
+			didPlayer1win = (score[0] > score[1]);
 			builder.setMessage("The Winner is "
-					+ (score[0] > score[1] ? playerNames[0] : playerNames[1]));
+					+ (didPlayer1win ? playerNames[0] : playerNames[1]));
 			break;
 		case 2:
+			didPlayer1win = (playerNo == 2);
 			builder.setMessage(playerNames[playerNo - 1]
 					+ " ran out of time! The Winner is "
-					+ (playerNo == 2 ? playerNames[0] : playerNames[1]));
+					+ (didPlayer1win ? playerNames[0] : playerNames[1]));
 			break;
 		}
+		
+		values.put(HighScoreProvider.KEY_NAME, didPlayer1win ? playerNames[0] : playerNames[1]);
+		values.put(HighScoreProvider.KEY_SCORE, didPlayer1win ? score[0] : score[1]);
+		values.put(HighScoreProvider.KEY_PIC_ID, didPlayer1win ? player1Id : player2Id);
+		cr.insert(HighScoreProvider.CONTENT_URI, values);
+		
 		builder.setTitle("Game Over")
 				.setNegativeButton("Cancel",
 						new DialogInterface.OnClickListener() {
@@ -541,18 +573,24 @@ public class GameScreen extends Activity {
 		Dialog dialog = builder.create();
 		dialog.show();
 	}
-
-	private void startTimer() {
-		timer = new CountDownTimer(timeLeft[playerNo - 1], 100) {
+	
+	private void startTimer(long timerLength) {
+		
+		timer = new CountDownTimer(timerLength, 100) {
 
 			@Override
 			public void onTick(long millisUntilFinished) {
+				beepCountDown -= 100;
+				if(beepCountDown <= 0) {
+					playBeep(getApplicationContext());
+					beepCountDown = 30000;
+				}
 				timeLeft[playerNo - 1] = millisUntilFinished;
 				if (playerNo == 1) {
-					player1Time.setText("Time: " + millisUntilFinished / 1000);
+					player1Time.setText("Time: " + millisUntilFinished/1000);
 					timeLeft[0] = millisUntilFinished;
 				} else {
-					player2Time.setText("Time: " + millisUntilFinished / 1000);
+					player2Time.setText("Time: " + millisUntilFinished/1000);
 					timeLeft[1] = millisUntilFinished;
 				}
 			}
@@ -566,6 +604,9 @@ public class GameScreen extends Activity {
 	}
 
 	private void stopTimer() {
+		player1Time.setText("Time: " + time/1000);
+		player2Time.setText("Time: " + time/1000);
+		beepCountDown = 30000;
 		timer.cancel();
 	}
 
@@ -584,10 +625,35 @@ public class GameScreen extends Activity {
 		getMenuInflater().inflate(R.menu.game_screen, menu);
 		return true;
 	}
+	
+	public void onBackPressed() {
+		//super.onBackPressed();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder .setMessage(getString(R.string.back_to_main_message))
+				.setTitle(getString(R.string.back_to_main_title))
+				.setNegativeButton(R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.cancel();
+							}
+						})
+				.setPositiveButton(R.string.yes,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								NavUtils.navigateUpFromSameTask(GameScreen.activity);
+							}
+						});
+		Dialog dialog = builder.create();
+		dialog.show();
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		switch (item.getItemId()) { 
 		case android.R.id.home:
 			// This ID represents the Home or Up button. In the case of this
 			// activity, the Up button is shown. Use NavUtils to allow users
@@ -596,7 +662,7 @@ public class GameScreen extends Activity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			NavUtils.navigateUpFromSameTask(this);
+			onBackPressed();
 			return true;
 		case R.id.newgame:
 			newGame();
@@ -609,5 +675,12 @@ public class GameScreen extends Activity {
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
+	
+	public static void playBeep(Context context){  
+		if(playSounds) {
+			MediaPlayer mp = MediaPlayer.create(context, R.raw.beep); 
+			mp.start();
+		}
+		}
 
 }

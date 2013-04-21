@@ -30,8 +30,8 @@
     <string name="options_import">Import</string>
     <string name="player_1_name">Player 1 Name</string>
     <string name="player_2_name">Player 2 Name</string>
-    <string name="options_time_label">Amount of time in Timed Mode (milliseconds)</string>
-    <string name="options_time_hint">60000</string>
+    <string name="options_time_label">Amount of time in Timed Mode (seconds)</string>
+    <string name="options_time_hint">60</string>
     <string name="allow_hints">Allow Hints</string>
     <string name="togglebutton">ToggleButton</string>
     <string name="show_the_show_moves_button_">Show the Show Moves button:</string>
@@ -42,6 +42,15 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete ALL data</string>
     <string name="dialog_title_delete">Delete all data?</string>
-    <string name="title_activity_high_scores">HighScoresActivity</string>
+    <string name="title_activity_high_scores">High Scores</string>
+    <string name="high_scores">High Scores</string>
+    <string name="enable_sound">Enable Sound</string>
+    <string name="turn_on_to_enable_sound_">"Turn on to enable sound: "</string>
+    <string name="enable_alternative_pieces">Enable alternative pieces</string>
+    <string name="alternative_colours">Alternative Colours</string>
+    <string name="back_to_main_message">Back to main menu?</string>
+    <string name="back_to_main_title">End Game?</string>
+    <string name="yes">Yes</string>
+    <string name="new_game">New Game</string>
 
 </resources>

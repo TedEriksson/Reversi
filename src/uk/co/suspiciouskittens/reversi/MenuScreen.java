@@ -16,6 +16,7 @@ public class MenuScreen extends Activity {
 
 	private Button normalButton;
 	private Button timedButton;
+	private Button highButton;
 	private Button optionsButton;
 	public static Activity activity;
 
@@ -27,6 +28,7 @@ public class MenuScreen extends Activity {
 		activity = this;
 		normalButton = (Button) findViewById(R.id.normal_button);
 		timedButton = (Button) findViewById(R.id.timed_button);
+		highButton = (Button) findViewById(R.id.highscores_button);
 		optionsButton = (Button) findViewById(R.id.options_button);
 
 		normalButton.setOnClickListener(new OnClickListener() {
@@ -114,6 +116,17 @@ public class MenuScreen extends Activity {
 
 			}
 
+		});
+		
+		highButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(
+						getApplicationContext(),
+						HighScoresActivity.class);
+				startActivity(intent);
+			}
 		});
 		
 		optionsButton.setOnClickListener(new OnClickListener() {

@@ -175,6 +175,72 @@
                 android:layout_toLeftOf="@+id/hints_toggle"
                 android:text="@string/show_the_show_moves_button_" />
         </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/options_sound_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
+                android:layout_alignParentTop="true"
+                android:text="@string/enable_sound" />
+
+            <ToggleButton
+                android:id="@+id/sound_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/options_sound_label"
+                android:text="@string/togglebutton"
+                android:textOff="NO"
+                android:textOn="YES" />
+
+            <TextView
+                android:id="@+id/options_sound_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/sound_toggle"
+                android:layout_alignBottom="@+id/sound_toggle"
+                android:layout_toLeftOf="@+id/sound_toggle"
+                android:text="@string/turn_on_to_enable_sound_" />
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/options_alt_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
+                android:layout_alignParentTop="true"
+                android:text="@string/alternative_colours" />
+
+            <ToggleButton
+                android:id="@+id/alt_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/options_alt_label"
+                android:text="@string/togglebutton"
+                android:textOff="NO"
+                android:textOn="YES" />
+
+            <TextView
+                android:id="@+id/options_alt_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/alt_toggle"
+                android:layout_alignBottom="@+id/alt_toggle"
+                android:layout_toLeftOf="@+id/alt_toggle"
+                android:text="@string/enable_alternative_pieces" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

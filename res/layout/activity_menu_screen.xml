@@ -20,14 +20,6 @@
         android:layout_centerHorizontal="true"
         android:text="@string/play_normal" />
 
-    <Button
-        android:id="@+id/options_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/timed_button"
-        android:layout_centerHorizontal="true"
-        android:text="@string/options" />
-
     <ImageView
         android:id="@+id/imageView1"
         android:contentDescription="@string/app_name"
@@ -36,5 +28,21 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/title" />
+
+    <Button
+        android:id="@+id/highscores_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timed_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/high_scores" />
+
+    <Button
+        android:id="@+id/options_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/highscores_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/options" />
 
 </RelativeLayout>
